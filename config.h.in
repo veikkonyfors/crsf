@@ -1,0 +1,2 @@
+#define crsflib_VERSION_MAJOR @crsflib_VERSION_MAJOR@
+#define crsflib_VERSION_MINOR @crsflib_VERSION_MINOR@
