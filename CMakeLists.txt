@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.10)
 # Set some basic project attributes
 project (crsf
 	VERSION 0.1
-	DESCRIPTION "A Hello World Project")
+	DESCRIPTION "Lib for crossfire functions")
 
 # This project will output alibrary
 add_library(crsf STATIC crsf.c)
