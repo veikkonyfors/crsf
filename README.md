@@ -1,1 +1,1 @@
-Library CRoSsFire functionality
+Library for CRoSsFire functionality
