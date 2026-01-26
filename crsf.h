@@ -1,8 +1,8 @@
-/*
- * crsf_enhanced.h
- *
- *  Created on: Dec 6, 2025
- *      Author: pappa
+/**
+ * @file crsf.h
+ * @author pappa
+ * @date Jan 6, 2026
+ * @brief Methods for CRossFiRe message processing.
  */
 
 #ifndef CRSF_H
@@ -371,6 +371,19 @@ void crsf_create_battery_frame(crsf_frame_union_t *frame,
 // Parsing functions
 crsf_frame_type_e crsf_get_frame_type(const uint8_t *data);
 bool crsf_is_valid_frame(const uint8_t *data, size_t len);
+
+
+/**
+ *
+ * Created on: Jan 23, 2026
+ * Author: pappa
+ *
+ * @brief Formats CRSF message contents to a string.
+ * @param *frame  Message to be formatted.
+ * @param *return_string Formatted message. Space allocated by the caller.
+ * @param return_string_size Space allocated for return_string, return_string will be truncated to this length if required.
+ */
+void crsf_to_string(const uint8_t *frame, char *return_string, size_t return_string_size);
 
 /*
 // Utility functions

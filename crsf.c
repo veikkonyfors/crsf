@@ -5,6 +5,9 @@
  *      Author: pappa
  */
 
+#include <stdio.h>
+#include <string.h>
+
 #include "crsf.h"
 
 // ==============================
@@ -130,5 +133,38 @@ void crsf_unpack_channels(const uint8_t *buffer, uint16_t *channels) {
         // Remove used bits
         bit_buffer >>= 11;
         bit_count -= 11;
+    }
+}
+
+void crsf_to_string(const uint8_t *frame, char *return_string, size_t return_string_size){
+	crsf_channels_t channels;
+	crsf_frame_type_e type = crsf_get_frame_type(frame);
+
+	memset(return_string, 0, return_string_size);
+
+    switch (type) {
+        case CRSF_FRAMETYPE_LINK_STATISTICS:
+            // Process link stats
+            break;
+        case CRSF_FRAMETYPE_GPS:
+            // Process GPS data
+            break;
+        case CRSF_FRAMETYPE_RC_CHANNELS_PACKED: // 0X16
+			{
+				crsf_rc_channels_packed_t *channels_packed = (crsf_rc_channels_packed_t *)frame;
+				uint16_t *pchannels = (uint16_t *)&channels;
+
+				// Process flight data
+				crsf_unpack_channels(channels_packed->data, pchannels);
+				snprintf(return_string, return_string_size,"CRSF_FRAMETYPE_RC_CHANNELS_PACKED:\n");
+				snprintf(return_string + strlen(return_string), return_string_size, "Roll: %4d, Pitch: %4d Throttle: %4d, Yaw: %4d, ", channels.ch1, channels.ch2, channels.ch3, channels.ch4);
+				snprintf(return_string + strlen(return_string), return_string_size, "Disarm: %4d, Flight Mode: %4d, Buzzer: %4d, Blackbox log activation: %4d, ", channels.ch5, channels.ch6, channels.ch7, channels.ch8);
+				snprintf(return_string + strlen(return_string), return_string_size, "VTX Control: %4d, Pan: %4d, OSD Menu Navigation: %4d, RTH activation: %4d, ", channels.ch9, channels.ch10, channels.ch11, channels.ch12);
+				snprintf(return_string + strlen(return_string), return_string_size, "LED Strip Control: %4d, Script Control: %4d, Trainer Mode: %4d, Custom / Reserved: %4d\n", channels.ch13, channels.ch14, channels.ch15, channels.ch16);
+			}
+            break;
+        default:
+        	printf("Unknown type 0x%02X\n", type);
+        	printf("Received frame type: 0x%02X\n", type);
     }
 }
